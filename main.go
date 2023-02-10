@@ -144,33 +144,7 @@ func createUser(w http.ResponseWriter, r *http.Request) {
 
 }
 
-/*func getUsers(w http.ResponseWriter, r *http.Request) {
-	var p GetU
-	if err := json.NewDecoder(r.Body).Decode(&p); err != nil {
-		fmt.Println(err)
-		http.Error(w, "Error decoidng response object", http.StatusBadRequest)
-		return
-	}
-	username := p.Name
-	id := p.Id
-	role := p.Role
-	filter := bson.M{
-		"id":   id,
-		"name": username,
-		"role": role,
-	}
-	user := &User{}
-	err := UserCollection.FindOne(context.TODO(), filter).Decode(&user)
-	if err != nil {
-		panic(err)
-
-	}
-	w.Header().Set("Content-Type", "application/json")
-	fmt.Println(user)
-	json.NewEncoder(w).Encode(user)
-
-}*/
-
+//students enter leave request
 func sendRequest(w http.ResponseWriter, r *http.Request) {
 	fmt.Println("In sedn Req")
 	//u := User{}
@@ -249,6 +223,7 @@ func checkStatus(w http.ResponseWriter, r *http.Request) {
 
 }
 
+//allows admin to list all the leaves with respect to a student
 func listLeaves(w http.ResponseWriter, r *http.Request) {
 	//	var p ListLeave[]
 	q := mux.Vars(r)
@@ -273,7 +248,6 @@ func listLeaves(w http.ResponseWriter, r *http.Request) {
 
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)
-	// json.NewEncoder(w).Encode(p)
 
 	json.NewEncoder(w).Encode(AllLeave{
 		Leaves: results,
@@ -299,8 +273,6 @@ func validateJWT(next func(w http.ResponseWriter, r *http.Request)) func(http.Re
 	fmt.Println("i'm in validate")
 
 	return func(w http.ResponseWriter, r *http.Request) {
-
-		// return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		fmt.Println("i'm in next")
 
 		if r.Header["Token"] != nil {
@@ -349,8 +321,6 @@ type getJWtRes struct {
 }
 
 func getJWt(w http.ResponseWriter, r *http.Request) {
-	// if r.Header["Access"] != nil {
-	// if r.Header["Access"][0] == api_key {
 
 	fmt.Println("Body======", r.Body)
 	jwtReq := getJWtReq{}
@@ -375,9 +345,6 @@ func getJWt(w http.ResponseWriter, r *http.Request) {
 		Status: 200,
 		Token:  token,
 	})
-	// fmt.Fprint(w, token)
-	// }
-	// }
 }
 
 func ApproveLeave(w http.ResponseWriter, r *http.Request) {
